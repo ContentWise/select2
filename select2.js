@@ -2398,10 +2398,14 @@ the specific language governing permissions and limitations under the Apache Lic
 
                     var data = [];
 
-                    element.find("option").filter(function() { return this.selected }).each2(function (i, elm) {
-                        data.push(self.optionToData(elm));
-                    });
-                    callback(data);
+					var selOptions = element.find("option").filter(function() { return this.selected });
+					selOptions = _.sortBy(selOptions, function(elm, ii) {
+						return $(elm).attr("data-order") || ii + 10000;
+					});
+					_.each(selOptions, function (elm) {
+						data.push(self.optionToData( $(elm) ));
+					});
+					callback(data);
                 };
             } else if ("data" in opts) {
                 // install default initSelection when applied to hidden input and data is local
